@@ -1,0 +1,48 @@
+Name - Madhav
+UID - 23BAI70107
+
+
+
+
+
+LC - 1971
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        if source == destination:
+            return True
+        graph = [[] for i in range(n)]
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
+        visited = set()
+        def dfs(node):
+            if node == destination:
+                return True
+            visited.add(node)
+            for i in graph[node]:
+                if i not in visited:
+                    if dfs(i):
+                        return True
+            return False
+
+        return dfs(source)
+
+
+
+
+
+LC - 239
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        deq = deque()
+        ans = []
+        n = len(nums)
+        for i in range(n):
+            if deq and deq[0] < i - k + 1:
+                deq.popleft()
+            while deq and nums[i] >= nums[deq[-1]]:
+                deq.pop()
+            deq.append(i)
+            if i >= k - 1:
+                ans.append(nums[deq[0]])
+        return ans
